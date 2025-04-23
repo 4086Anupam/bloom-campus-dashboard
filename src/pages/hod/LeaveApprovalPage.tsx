@@ -172,7 +172,7 @@ export default function LeaveApprovalPage() {
           
           <TabsContent value="pending" className="space-y-4 mt-4">
             {leaveRequests.filter(req => req.status === "pending").length === 0 ? (
-              <DashboardCard>
+              <DashboardCard title="No Pending Requests">
                 <div className="flex flex-col items-center justify-center py-8">
                   <Calendar className="h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-lg font-medium">No pending leave requests</p>
@@ -183,7 +183,7 @@ export default function LeaveApprovalPage() {
               </DashboardCard>
             ) : (
               leaveRequests.filter(req => req.status === "pending").map((request) => (
-                <DashboardCard key={request.id} className="hover:shadow-md transition-shadow">
+                <DashboardCard key={request.id} className="hover:shadow-md transition-shadow" title={`Request from ${request.teacherName}`}>
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export default function LeaveApprovalPage() {
           
           <TabsContent value="history" className="space-y-4 mt-4">
             {leaveRequests.filter(req => req.status !== "pending").length === 0 ? (
-              <DashboardCard>
+              <DashboardCard title="No Request History">
                 <div className="flex flex-col items-center justify-center py-8">
                   <Calendar className="h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-lg font-medium">No processed leave requests</p>
@@ -240,7 +240,7 @@ export default function LeaveApprovalPage() {
               </DashboardCard>
             ) : (
               leaveRequests.filter(req => req.status !== "pending").map((request) => (
-                <DashboardCard key={request.id} className="hover:shadow-md transition-shadow">
+                <DashboardCard key={request.id} className="hover:shadow-md transition-shadow" title={`Request from ${request.teacherName}`}>
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
