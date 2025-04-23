@@ -70,6 +70,7 @@ export default function NoticeBoardPage() {
         content: "We've updated the department approval process. Please review the new guidelines.",
         date: new Date('2025-04-21T14:15:00'),
         category: "Administration",
+        isPinned: false,
         hasAttachment: true,
       },
     ],
@@ -89,6 +90,7 @@ export default function NoticeBoardPage() {
         content: "The Computer Science department is organizing a workshop on AI Development on May 2nd. All interested students can register.",
         date: new Date('2025-04-18T09:30:00'),
         category: "Workshop",
+        isPinned: false,
       },
     ],
     campus: [
@@ -98,6 +100,7 @@ export default function NoticeBoardPage() {
         content: "Campus Wi-Fi infrastructure is being upgraded next week. Expect brief outages in different buildings.",
         date: new Date('2025-04-17T16:00:00'),
         category: "Facility",
+        isPinned: false,
       },
       {
         id: "9",
@@ -105,6 +108,7 @@ export default function NoticeBoardPage() {
         content: "The annual sports day will be held on May 8th. All students and faculty are encouraged to participate.",
         date: new Date('2025-04-15T11:20:00'),
         category: "Event",
+        isPinned: false,
         hasAttachment: true,
       },
     ],
