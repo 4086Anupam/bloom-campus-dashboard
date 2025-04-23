@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import NotFound from "./pages/NotFound";
 import StudyMaterialsPage from "./pages/student/StudyMaterialsPage";
+import LeaveApprovalPage from "./pages/hod/LeaveApprovalPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Login />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/hod" element={<HODDashboard />} />
+          <Route path="/hod/leave" element={<LeaveApprovalPage />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/student/materials" element={<StudyMaterialsPage />} />
