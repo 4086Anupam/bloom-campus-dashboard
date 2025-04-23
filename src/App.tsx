@@ -19,6 +19,7 @@ import StudentExamsPage from "./pages/student/StudentExamsPage";
 import StudentLeavePage from "./pages/student/StudentLeavePage";
 import StudentFeedbackPage from "./pages/student/StudentFeedbackPage";
 import TeacherMaterialsPage from "./pages/teacher/TeacherMaterialsPage";
+import TeacherExamsPage from "./pages/teacher/TeacherExamsPage";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/hod/leave" element={<LeaveApprovalPage />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/teacher/materials" element={<TeacherMaterialsPage />} />
+          <Route path="/teacher/exams" element={<TeacherExamsPage />} />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/student/materials" element={<StudyMaterialsPage />} />
           <Route path="/student/attendance" element={<StudentAttendancePage />} />
