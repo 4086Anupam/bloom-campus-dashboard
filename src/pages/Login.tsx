@@ -28,8 +28,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { useNavigate } from "react-router-dom";
+import { Info } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -43,16 +49,24 @@ const formSchema = z.object({
   }),
 });
 
+const demoAccounts = {
+  admin: { email: "admin@demo.com", password: "admin123" },
+  hod: { email: "hod@demo.com", password: "hod123" },
+  teacher: { email: "teacher@demo.com", password: "teacher123" },
+  student: { email: "student@demo.com", password: "student123" },
+};
+
 export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<keyof typeof demoAccounts>("student");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      role: "student",
+      email: demoAccounts[selectedRole].email,
+      password: demoAccounts[selectedRole].password,
+      role: selectedRole,
     },
   });
 
@@ -63,16 +77,33 @@ export default function Login() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Navigate based on role
-      navigate(`/${values.role}`);
-      
-      console.log(values);
+      // Demo account validation
+      const demoAccount = demoAccounts[values.role as keyof typeof demoAccounts];
+      if (values.email === demoAccount.email && values.password === demoAccount.password) {
+        // Navigate based on role
+        navigate(`/${values.role}`);
+      } else {
+        form.setError("root", { 
+          type: "manual",
+          message: "Invalid credentials. Please use the demo account details." 
+        });
+      }
     } catch (error) {
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
   }
+
+  const handleRoleChange = (role: string) => {
+    const demoRole = role as keyof typeof demoAccounts;
+    setSelectedRole(demoRole);
+    form.reset({
+      email: demoAccounts[demoRole].email,
+      password: demoAccounts[demoRole].password,
+      role: demoRole,
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -89,9 +120,48 @@ export default function Login() {
             Enter your credentials to access your account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        
+        <CardContent className="space-y-4">
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertTitle>Demo Accounts</AlertTitle>
+            <AlertDescription className="mt-2 text-sm">
+              Select a role to automatically fill in the demo credentials
+            </AlertDescription>
+          </Alert>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Login As</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        handleRoleChange(value);
+                      }}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select your role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="hod">Department Head</SelectItem>
+                        <SelectItem value="teacher">Teacher</SelectItem>
+                        <SelectItem value="student">Student</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
               <FormField
                 control={form.control}
                 name="email"
@@ -129,32 +199,13 @@ export default function Login() {
                 )}
               />
               
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Login As</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="rounded-lg">
-                          <SelectValue placeholder="Select your role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="hod">Department Head</SelectItem>
-                        <SelectItem value="teacher">Teacher</SelectItem>
-                        <SelectItem value="student">Student</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {form.formState.errors.root && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    {form.formState.errors.root.message}
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <CardFooter className="px-0 pt-4">
                 <Button 
@@ -172,3 +223,4 @@ export default function Login() {
     </div>
   );
 }
+
